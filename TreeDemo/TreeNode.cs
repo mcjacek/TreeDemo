@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TreeDemo
 {
-    class TreeNode : IEnumerable<TreeNode>
+    public class TreeNode : IEnumerable<TreeNode>
     {
         private readonly Dictionary<string, TreeNode> _children =
                                             new Dictionary<string, TreeNode>();
