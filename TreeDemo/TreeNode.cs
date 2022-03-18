@@ -44,7 +44,7 @@ namespace TreeDemo
             return this.GetEnumerator();
         }
 
-        public int Count
+        public int CountOfChildren
         {
             get { return this._children.Count; }
         }
@@ -66,6 +66,89 @@ namespace TreeDemo
             {
                 BuildTree(child.Value, depth + 1);
             }
+        }
+
+        /// <summary>
+        /// Get the sum of the branch lengths of this node and all its descendants.
+        /// </summary>
+        /// <returns></returns>
+        public double TotalLength()
+        {
+            double tbr = 1;
+
+            foreach (var child in _children)
+            {
+                tbr += child.Value.TotalLength();
+            }
+            return tbr;
+        }
+
+        /// <summary>
+        /// Get the maximum dept of the tree
+        /// </summary>
+        /// <returns></returns>
+        public double MaxDept()
+        {
+            double tbr = 1;
+
+            foreach (var child in _children)
+            {
+                tbr += child.Value.TotalLength();
+            }
+            return tbr;
+        }
+
+        public List<TreeNode> Depth
+        {
+            get
+            {
+                List<TreeNode> path = new List<TreeNode>();
+                foreach (var node in _children)
+                {
+                    List<TreeNode> tmp = node.Value.Depth;
+                    if (tmp.Count > path.Count)
+                    {
+                        path = tmp;
+                    }
+                }
+                path.Insert(0, this);
+                return path;
+            }
+        }
+
+        public List<string> GetLeafNames()
+        {
+            List<string> leafs = new List<string>();
+
+            if(_children.Count == 0)
+            {
+                leafs.Add(ID);
+            }
+
+            foreach(var child in _children)
+            {
+                leafs.AddRange(child.Value.GetLeafNames());
+            }
+
+            return leafs;
+        }
+
+        /// <summary>
+        /// Get the sum of the branch lengths from this node up to the root.
+        /// </summary>
+        public double UpstreamLength()
+        {
+            double tbr = 0;
+
+            TreeNode nd = this;
+
+            while (nd.Parent != null)
+            {
+                tbr += 1;
+                nd = nd.Parent;
+            }
+
+            return tbr;
         }
     }
 }
